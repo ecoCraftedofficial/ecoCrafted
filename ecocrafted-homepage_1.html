@@ -1,0 +1,1343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ecoCrafted — Waste Transformed</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #F2F0E8;
+    --warm-white: #F8F7F2;
+    --dark: #151A12;
+    --mid: #3D4A35;
+    --muted: #7A8A70;
+    --accent: #3E5C30;
+    --accent-light: #6E9458;
+    --accent-pale: #D4E4C8;
+    --green-deep: #2A3D1F;
+    --green-mid: #4A6E38;
+    --green-wash: #EAF0E4;
+    --border: rgba(42,61,31,0.12);
+    --border-hover: rgba(42,61,31,0.28);
+    --serif: 'Cormorant Garamond', Georgia, serif;
+    --sans: 'DM Sans', system-ui, sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--sans);
+    background: var(--warm-white);
+    color: var(--dark);
+    font-weight: 300;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* LANGUAGE TOGGLE */
+  .lang-toggle {
+    position: fixed;
+    top: 28px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    display: flex;
+    gap: 0;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+    background: rgba(250,249,246,0.92);
+    backdrop-filter: blur(8px);
+  }
+  .lang-toggle button {
+    padding: 6px 14px;
+    font-family: var(--sans);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    font-weight: 400;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: var(--muted);
+    background: transparent;
+  }
+  .lang-toggle button.active {
+    background: var(--dark);
+    color: var(--warm-white);
+  }
+  .lang-en .th-only { display: none; }
+  .lang-th .en-only { display: none; }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 999;
+    padding: 28px 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: background 0.4s, padding 0.4s;
+  }
+  nav.scrolled {
+    background: rgba(250,249,246,0.96);
+    backdrop-filter: blur(12px);
+    padding: 18px 48px;
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    font-family: var(--serif);
+    font-size: 22px;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    color: var(--dark);
+    text-decoration: none;
+  }
+  .nav-logo span { color: var(--accent); }
+  .nav-links {
+    display: flex;
+    gap: 36px;
+    list-style: none;
+  }
+  .nav-links a {
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--mid);
+    transition: color 0.2s;
+    font-weight: 400;
+  }
+  .nav-links a:hover { color: var(--dark); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding-top: 0;
+  }
+  .hero-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 120px 64px 80px 48px;
+    background: var(--cream);
+    position: relative;
+  }
+  .hero-eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 400;
+    margin-bottom: 32px;
+  }
+  .hero-title {
+    font-family: var(--serif);
+    font-size: clamp(52px, 6vw, 88px);
+    font-weight: 300;
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    color: var(--dark);
+    margin-bottom: 40px;
+  }
+  .hero-title em {
+    font-style: italic;
+    color: var(--accent);
+  }
+  .hero-body {
+    font-size: 15px;
+    color: var(--mid);
+    max-width: 400px;
+    line-height: 1.8;
+    margin-bottom: 48px;
+  }
+  .hero-actions {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+  }
+  .btn-primary {
+    padding: 14px 32px;
+    background: var(--dark);
+    color: var(--warm-white);
+    font-family: var(--sans);
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    font-weight: 400;
+    border: 1px solid var(--dark);
+    transition: all 0.3s;
+    cursor: pointer;
+    display: inline-block;
+  }
+  .btn-primary:hover {
+    background: transparent;
+    color: var(--dark);
+  }
+  .btn-ghost {
+    padding: 14px 32px;
+    background: transparent;
+    color: var(--dark);
+    font-family: var(--sans);
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    font-weight: 400;
+    border: 1px solid var(--border-hover);
+    transition: all 0.3s;
+    cursor: pointer;
+    display: inline-block;
+  }
+  .btn-ghost:hover {
+    border-color: var(--dark);
+  }
+  .hero-stat {
+    position: absolute;
+    bottom: 80px;
+    right: -1px;
+    background: var(--warm-white);
+    padding: 24px 32px;
+    border-left: 3px solid var(--accent);
+  }
+  .hero-stat-number {
+    font-family: var(--serif);
+    font-size: 36px;
+    font-weight: 300;
+    color: var(--dark);
+    line-height: 1;
+  }
+  .hero-stat-label {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 6px;
+  }
+  .hero-right {
+    position: relative;
+    overflow: hidden;
+    background: #2C2B28;
+  }
+  .hero-image-placeholder {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    opacity: 0.85;
+  }
+  .hero-image-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, transparent 60%, rgba(26,25,23,0.4));
+  }
+  .hero-image-caption {
+    position: absolute;
+    bottom: 32px;
+    left: 32px;
+    color: rgba(250,249,246,0.7);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  /* MARQUEE */
+  .marquee-strip {
+    background: var(--dark);
+    color: var(--warm-white);
+    padding: 16px 0;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .marquee-inner {
+    display: inline-flex;
+    animation: marquee 28s linear infinite;
+    gap: 0;
+  }
+  .marquee-item {
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 0 48px;
+    display: inline-flex;
+    align-items: center;
+    gap: 48px;
+    color: rgba(250,249,246,0.7);
+  }
+  .marquee-item span {
+    color: var(--accent-light);
+    font-size: 16px;
+    line-height: 1;
+  }
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* SECTION COMMONS */
+  section { padding: 120px 48px; }
+  .section-label {
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 24px;
+    font-weight: 400;
+  }
+  .section-title {
+    font-family: var(--serif);
+    font-size: clamp(36px, 4vw, 58px);
+    font-weight: 300;
+    line-height: 1.1;
+    color: var(--dark);
+  }
+
+  /* ABOUT / MISSION */
+  .about {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 96px;
+    align-items: center;
+    background: var(--warm-white);
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 120px 48px;
+  }
+  .about-text { }
+  .about-title {
+    font-family: var(--serif);
+    font-size: clamp(38px, 4vw, 60px);
+    font-weight: 300;
+    line-height: 1.1;
+    margin-bottom: 32px;
+    color: var(--dark);
+  }
+  .about-title em { font-style: italic; color: var(--accent); }
+  .about-body {
+    font-size: 15px;
+    color: var(--mid);
+    line-height: 1.9;
+    margin-bottom: 16px;
+  }
+  .about-body + .about-body { margin-top: 16px; }
+  .about-visual {
+    position: relative;
+  }
+  .about-image-block {
+    width: 100%;
+    aspect-ratio: 4/5;
+    background: var(--cream);
+    position: relative;
+    overflow: hidden;
+  }
+  .about-image-block img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .about-pull-quote {
+    position: absolute;
+    bottom: -24px;
+    left: -40px;
+    background: var(--dark);
+    color: var(--warm-white);
+    padding: 32px 36px;
+    max-width: 280px;
+  }
+  .about-pull-quote p {
+    font-family: var(--serif);
+    font-size: 18px;
+    font-style: italic;
+    line-height: 1.5;
+    font-weight: 300;
+  }
+  .about-pull-quote cite {
+    display: block;
+    font-family: var(--sans);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent-light);
+    margin-top: 16px;
+    font-style: normal;
+  }
+
+  /* STATS ROW */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    background: var(--cream);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .stat-item {
+    padding: 56px 48px;
+    border-right: 1px solid var(--border);
+    text-align: center;
+  }
+  .stat-item:last-child { border-right: none; }
+  .stat-number {
+    font-family: var(--serif);
+    font-size: 52px;
+    font-weight: 300;
+    color: var(--dark);
+    line-height: 1;
+    margin-bottom: 12px;
+  }
+  .stat-label {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  /* PRODUCTS */
+  .products-section {
+    background: var(--warm-white);
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 120px 48px;
+  }
+  .products-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 64px;
+  }
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+  }
+  .product-card {
+    background: var(--cream);
+    aspect-ratio: 3/4;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    transition: opacity 0.3s;
+  }
+  .product-card:first-child {
+    grid-row: span 2;
+    aspect-ratio: auto;
+  }
+  .product-card:hover .product-overlay {
+    opacity: 1;
+  }
+  .product-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+  }
+  .product-card:hover img {
+    transform: scale(1.04);
+  }
+  .product-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(26,25,23,0.6);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 32px;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .product-overlay-name {
+    font-family: var(--serif);
+    font-size: 28px;
+    color: var(--warm-white);
+    font-weight: 300;
+    margin-bottom: 8px;
+  }
+  .product-overlay-material {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(250,249,246,0.6);
+  }
+  .product-label {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+  }
+  .product-name {
+    font-family: var(--serif);
+    font-size: 20px;
+    font-weight: 300;
+    color: var(--dark);
+    background: var(--cream);
+    padding: 8px 16px 8px 0;
+  }
+
+  /* PROCESS */
+  .process-section {
+    background: var(--dark);
+    color: var(--warm-white);
+    padding: 120px 48px;
+  }
+  .process-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  .process-section .section-label { color: var(--accent-light); }
+  .process-section .section-title { color: var(--warm-white); }
+  .process-steps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 48px;
+    margin-top: 80px;
+  }
+  .process-step { }
+  .step-number {
+    font-family: var(--serif);
+    font-size: 64px;
+    font-weight: 300;
+    color: rgba(250,249,246,0.1);
+    line-height: 1;
+    margin-bottom: 24px;
+  }
+  .step-title {
+    font-family: var(--serif);
+    font-size: 22px;
+    font-weight: 300;
+    color: var(--warm-white);
+    margin-bottom: 16px;
+  }
+  .step-body {
+    font-size: 14px;
+    color: rgba(250,249,246,0.55);
+    line-height: 1.8;
+  }
+  .step-divider {
+    width: 32px;
+    height: 1px;
+    background: var(--accent);
+    margin-bottom: 24px;
+  }
+
+  /* STORY / FOUNDER */
+  .story-section {
+    background: var(--cream);
+    padding: 120px 48px;
+  }
+  .story-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 96px;
+    align-items: center;
+  }
+  .story-image-stack {
+    position: relative;
+    height: 600px;
+  }
+  .story-img-main {
+    position: absolute;
+    top: 0; left: 0;
+    width: 75%;
+    aspect-ratio: 3/4;
+    object-fit: cover;
+    background: var(--muted);
+  }
+  .story-img-secondary {
+    position: absolute;
+    bottom: 0; right: 0;
+    width: 55%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    background: #8A8075;
+    border: 6px solid var(--cream);
+  }
+  .story-year {
+    position: absolute;
+    top: 50%;
+    right: 10%;
+    transform: translateY(-50%);
+    font-family: var(--serif);
+    font-size: 80px;
+    font-weight: 300;
+    color: rgba(26,25,23,0.08);
+    pointer-events: none;
+  }
+  .story-text .section-label { margin-bottom: 24px; }
+  .story-title {
+    font-family: var(--serif);
+    font-size: clamp(38px, 3.5vw, 52px);
+    font-weight: 300;
+    line-height: 1.15;
+    color: var(--dark);
+    margin-bottom: 32px;
+  }
+  .story-title em { font-style: italic; color: var(--accent); }
+  .story-body {
+    font-size: 15px;
+    color: var(--mid);
+    line-height: 1.9;
+    margin-bottom: 16px;
+  }
+  .story-credentials {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 40px;
+    padding-top: 40px;
+    border-top: 1px solid var(--border);
+  }
+  .credential {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    font-size: 13px;
+    color: var(--mid);
+  }
+  .credential-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+  }
+
+  /* IMPACT / PARTNERS */
+  .impact-section {
+    background: var(--warm-white);
+    padding: 120px 48px;
+  }
+  .impact-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  .impact-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    margin-top: 64px;
+  }
+  .impact-card {
+    background: var(--cream);
+    padding: 48px 40px;
+    border-left: 3px solid transparent;
+    transition: border-color 0.3s;
+  }
+  .impact-card:hover { border-color: var(--accent); }
+  .impact-icon {
+    width: 40px;
+    height: 40px;
+    margin-bottom: 24px;
+    opacity: 0.6;
+  }
+  .impact-card-title {
+    font-family: var(--serif);
+    font-size: 22px;
+    font-weight: 300;
+    color: var(--dark);
+    margin-bottom: 16px;
+  }
+  .impact-card-body {
+    font-size: 14px;
+    color: var(--mid);
+    line-height: 1.8;
+  }
+  .partners-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 64px;
+    margin-top: 96px;
+    padding-top: 64px;
+    border-top: 1px solid var(--border);
+    flex-wrap: wrap;
+  }
+  .partner-name {
+    font-family: var(--serif);
+    font-size: 20px;
+    font-weight: 300;
+    color: var(--muted);
+    letter-spacing: 0.03em;
+    transition: color 0.2s;
+  }
+  .partner-name:hover { color: var(--dark); }
+
+  /* PRESS */
+  .press-bar {
+    background: var(--cream);
+    padding: 48px;
+    text-align: center;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .press-label {
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 32px;
+  }
+  .press-logos {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 64px;
+    flex-wrap: wrap;
+  }
+  .press-name {
+    font-family: var(--serif);
+    font-size: 22px;
+    font-weight: 300;
+    color: var(--muted);
+    font-style: italic;
+    transition: color 0.2s;
+  }
+  .press-name:hover { color: var(--dark); }
+
+  /* CONTACT */
+  .contact-section {
+    background: var(--dark);
+    color: var(--warm-white);
+    padding: 120px 48px;
+    text-align: center;
+  }
+  .contact-inner {
+    max-width: 640px;
+    margin: 0 auto;
+  }
+  .contact-title {
+    font-family: var(--serif);
+    font-size: clamp(42px, 5vw, 72px);
+    font-weight: 300;
+    line-height: 1.1;
+    margin-bottom: 32px;
+    color: var(--warm-white);
+  }
+  .contact-title em { font-style: italic; color: var(--accent-light); }
+  .contact-body {
+    font-size: 15px;
+    color: rgba(250,249,246,0.6);
+    line-height: 1.8;
+    margin-bottom: 48px;
+  }
+  .contact-links {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+  .contact-link {
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--warm-white);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(250,249,246,0.2);
+    padding-bottom: 4px;
+    transition: border-color 0.2s;
+  }
+  .contact-link:hover { border-color: var(--accent-light); }
+
+  /* FOOTER */
+  footer {
+    background: #111110;
+    padding: 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 24px;
+  }
+  .footer-logo {
+    font-family: var(--serif);
+    font-size: 18px;
+    font-weight: 300;
+    color: rgba(250,249,246,0.4);
+    text-decoration: none;
+  }
+  .footer-copy {
+    font-size: 12px;
+    color: rgba(250,249,246,0.25);
+    letter-spacing: 0.05em;
+  }
+  .footer-links {
+    display: flex;
+    gap: 24px;
+    list-style: none;
+  }
+  .footer-links a {
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(250,249,246,0.35);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .footer-links a:hover { color: rgba(250,249,246,0.7); }
+
+  /* SHOPIFY EMBED SECTION */
+  .shop-section {
+    background: var(--warm-white);
+    padding: 80px 48px;
+    text-align: center;
+    border-top: 1px solid var(--border);
+  }
+  .shop-inner {
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+  .shopify-placeholder {
+    background: var(--cream);
+    border: 1px dashed var(--border-hover);
+    padding: 64px;
+    margin-top: 48px;
+    text-align: center;
+  }
+  .shopify-placeholder p {
+    font-size: 13px;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+  }
+  .shopify-placeholder code {
+    display: block;
+    font-family: monospace;
+    font-size: 12px;
+    color: var(--accent);
+    margin-top: 16px;
+    background: rgba(92,107,74,0.08);
+    padding: 16px;
+    text-align: left;
+  }
+
+  /* SMOOTH SCROLL TRANSITIONS */
+  section, .about, .stats-row, .products-section,
+  .process-section, .story-section, .impact-section,
+  .shop-section, .contact-section {
+    transition: background-color 0.6s ease;
+  }
+
+  /* GREEN WASH on alternating sections */
+  .about { background: var(--green-wash) !important; }
+  .story-section { background: var(--green-wash) !important; }
+
+  /* SECTION REVEAL — smoother, staggered */
+  .fade-up {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.9s cubic-bezier(0.22,1,0.36,1),
+                transform 0.9s cubic-bezier(0.22,1,0.36,1);
+  }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+  /* Stagger children inside revealed sections */
+  .fade-up.visible .process-step:nth-child(1) { transition-delay: 0s; }
+  .fade-up.visible .process-step:nth-child(2) { transition-delay: 0.1s; }
+  .fade-up.visible .process-step:nth-child(3) { transition-delay: 0.2s; }
+  .fade-up.visible .process-step:nth-child(4) { transition-delay: 0.3s; }
+  .fade-up.visible .impact-card:nth-child(1)  { transition-delay: 0s; }
+  .fade-up.visible .impact-card:nth-child(2)  { transition-delay: 0.12s; }
+  .fade-up.visible .impact-card:nth-child(3)  { transition-delay: 0.24s; }
+  .process-step, .impact-card {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s cubic-bezier(0.22,1,0.36,1),
+                transform 0.7s cubic-bezier(0.22,1,0.36,1);
+  }
+  .fade-up.visible .process-step,
+  .fade-up.visible .impact-card {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* GREEN ACCENT LINE on section labels */
+  .section-label::before {
+    content: '';
+    display: inline-block;
+    width: 18px;
+    height: 1px;
+    background: var(--accent-light);
+    margin-right: 10px;
+    vertical-align: middle;
+    margin-bottom: 2px;
+  }
+
+  /* STAT NUMBERS — green tint */
+  .stat-number { color: var(--accent) !important; }
+
+  /* STEP NUMBERS — deep green ghost */
+  .step-number { color: rgba(62,92,48,0.12) !important; }
+
+  /* STEP DIVIDER — green */
+  .step-divider { background: var(--accent-light) !important; }
+
+  /* HERO STAT border — green */
+  .hero-stat { border-left-color: var(--accent) !important; }
+
+  /* ABOUT PULL QUOTE — deep green bg */
+  .about-pull-quote { background: var(--green-deep) !important; }
+
+  /* CREDENTIAL DOT — green */
+  .credential-dot { background: var(--accent-light) !important; }
+
+  /* IMPACT CARD hover — green border */
+  .impact-card:hover { border-color: var(--accent-light) !important; }
+
+  /* MARQUEE — deep green bg */
+  .marquee-strip { background: var(--green-deep) !important; }
+  .marquee-item span { color: var(--accent-light) !important; }
+
+  /* PROCESS SECTION — deep green bg */
+  .process-section { background: var(--green-deep) !important; }
+
+  /* CONTACT SECTION — deep green bg */
+  .contact-section { background: var(--green-deep) !important; }
+  .contact-title em { color: var(--accent-light) !important; }
+
+  /* FOOTER */
+  footer { background: #0E1509 !important; }
+
+  /* HERO EYEBROW */
+  .hero-eyebrow { color: var(--accent) !important; }
+
+  /* NAV logo accent */
+  .nav-logo span { color: var(--accent) !important; }
+
+  /* BTN PRIMARY — deep green */
+  .btn-primary {
+    background: var(--green-deep) !important;
+    border-color: var(--green-deep) !important;
+    color: var(--warm-white) !important;
+  }
+  .btn-primary:hover {
+    background: transparent !important;
+    color: var(--green-deep) !important;
+  }
+
+  /* HERO ITALIC */
+  .hero-title em { color: var(--accent) !important; }
+  .about-title em { color: var(--accent) !important; }
+  .story-title em { color: var(--accent) !important; }
+
+  /* SMOOTH background color gradient on body as user scrolls */
+  body { transition: background-color 0.8s ease; }
+
+
+
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; }
+    .hero-right { min-height: 50vw; }
+    .about, .story-inner { grid-template-columns: 1fr; gap: 48px; }
+    .products-grid { grid-template-columns: 1fr 1fr; }
+    .product-card:first-child { grid-row: span 1; }
+    .stats-row { grid-template-columns: 1fr 1fr; }
+    .process-steps { grid-template-columns: 1fr 1fr; }
+    .impact-grid { grid-template-columns: 1fr; }
+    nav { padding: 20px 24px; }
+    section { padding: 80px 24px; }
+    .hero-left { padding: 100px 24px 64px; }
+  }
+</style>
+</head>
+<body class="lang-en" id="body">
+
+<!-- LANGUAGE TOGGLE -->
+<div class="lang-toggle">
+  <button class="active" onclick="setLang('en')" id="btn-en">EN</button>
+  <button onclick="setLang('th')" id="btn-th">TH</button>
+</div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#" class="nav-logo">eco<span>Crafted</span> <span style="font-size:22px; color:var(--accent); line-height:1;">♻</span></a>
+  <ul class="nav-links">
+    <li><a href="#about"><span class="en-only">About</span><span class="th-only">เกี่ยวกับ</span></a></li>
+    <li><a href="#products"><span class="en-only">Products</span><span class="th-only">ผลิตภัณฑ์</span></a></li>
+    <li><a href="#story"><span class="en-only">Our Story</span><span class="th-only">เรื่องราว</span></a></li>
+    <li><a href="#impact"><span class="en-only">Impact</span><span class="th-only">ผลกระทบ</span></a></li>
+    <li><a href="#contact" class="btn-primary" style="font-size:11px; padding:10px 22px;">
+      <span class="en-only">Contact</span><span class="th-only">ติดต่อ</span>
+    </a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" style="padding:0;">
+  <div class="hero-left">
+    <p class="hero-eyebrow en-only">Circular Economy · Bangkok, Thailand</p>
+    <p class="hero-eyebrow th-only">เศรษฐกิจหมุนเวียน · กรุงเทพมหานคร</p>
+
+    <h1 class="hero-title en-only">Waste<br>to <em>Wonder.</em></h1>
+    <h1 class="hero-title th-only">ขยะสู่<br><em>ความมหัศจรรย์</em></h1>
+
+    <p class="hero-body en-only">We transform construction waste — concrete bags, offcuts, debris — into thoughtfully designed objects for everyday life. Made in Thailand. Built to last.</p>
+    <p class="hero-body th-only">เราเปลี่ยนขยะก่อสร้าง — ถุงปูน เศษวัสดุ เศษซาก — ให้กลายเป็นสิ่งของที่ออกแบบอย่างใส่ใจสำหรับชีวิตประจำวัน ผลิตในไทย ทนทานยาวนาน</p>
+
+    <div class="hero-actions">
+      <a href="#products" class="btn-primary">
+        <span class="en-only">View Products</span>
+        <span class="th-only">ดูผลิตภัณฑ์</span>
+      </a>
+      <a href="#story" class="btn-ghost">
+        <span class="en-only">Our Story</span>
+        <span class="th-only">เรื่องราวของเรา</span>
+      </a>
+    </div>
+
+    <div class="hero-stat">
+      <div class="hero-stat-number">150k+</div>
+      <div class="hero-stat-label en-only">Thai Baht Revenue<br>Reinvested in Impact</div>
+      <div class="hero-stat-label th-only">บาทรายได้<br>นำกลับไปสู่ผลกระทบ</div>
+    </div>
+  </div>
+  <div class="hero-right">
+    <img src="https://ecocraftedofficial.com/wp-content/uploads/2025/07/IMG_0329-scaled.jpg"
+         alt="ecoCrafted lamp — handcrafted from recycled concrete" class="hero-image-placeholder">
+    <div class="hero-image-overlay"></div>
+    <p class="hero-image-caption en-only">Construction waste → Design objects</p>
+    <p class="hero-image-caption th-only">ขยะก่อสร้าง → วัตถุออกแบบ</p>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-strip">
+  <div class="marquee-inner">
+    <span class="marquee-item">Thai PBS Featured <span>·</span></span>
+    <span class="marquee-item">NSTDA Collaboration <span>·</span></span>
+    <span class="marquee-item">World Bank Forum <span>·</span></span>
+    <span class="marquee-item">Circular Economy <span>·</span></span>
+    <span class="marquee-item">Zero Waste Design <span>·</span></span>
+    <span class="marquee-item">150,000+ THB Revenue <span>·</span></span>
+    <span class="marquee-item">Community Impact <span>·</span></span>
+    <span class="marquee-item">Thai PBS Featured <span>·</span></span>
+    <span class="marquee-item">NSTDA Collaboration <span>·</span></span>
+    <span class="marquee-item">World Bank Forum <span>·</span></span>
+    <span class="marquee-item">Circular Economy <span>·</span></span>
+    <span class="marquee-item">Zero Waste Design <span>·</span></span>
+    <span class="marquee-item">150,000+ THB Revenue <span>·</span></span>
+    <span class="marquee-item">Community Impact <span>·</span></span>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<div id="about" style="background:var(--warm-white);">
+  <div class="about fade-up">
+    <div class="about-text">
+      <p class="section-label en-only">Our Mission</p>
+      <p class="section-label th-only">พันธกิจของเรา</p>
+
+      <h2 class="about-title en-only">Where <em>sustainability</em> meets craft.</h2>
+      <h2 class="about-title th-only">ที่ซึ่ง<em>ความยั่งยืน</em>พบกับงานฝีมือ</h2>
+
+      <p class="about-body en-only">Every construction site in Thailand generates tonnes of waste — concrete bags, timber offcuts, broken tiles — most of which is burned or buried. We saw something different.</p>
+      <p class="about-body th-only">ทุกไซต์ก่อสร้างในประเทศไทยสร้างของเสียเป็นตัน — ถุงปูน เศษไม้ กระเบื้องแตก — ส่วนใหญ่ถูกเผาหรือฝัง เราเห็นสิ่งที่แตกต่าง</p>
+
+      <p class="about-body en-only">Working alongside scientists at Thailand's National Science and Technology Development Agency (NSTDA), we developed processes to transform this discarded material into functional, design-led products — lamps, coasters, plant pots, benches, tiles — that belong in homes, offices, and hotels.</p>
+      <p class="about-body th-only">ด้วยการทำงานร่วมกับนักวิทยาศาสตร์จากสำนักงานพัฒนาวิทยาศาสตร์และเทคโนโลยีแห่งชาติ (สวทช.) เราได้พัฒนากระบวนการเปลี่ยนวัสดุที่ถูกทิ้งเหล่านี้ให้กลายเป็นผลิตภัณฑ์ที่ใช้งานได้จริงและมีดีไซน์</p>
+
+      <p class="about-body en-only">Beauty and responsibility, together. That is the only standard we accept.</p>
+      <p class="about-body th-only">ความงามและความรับผิดชอบ ควบคู่กัน นั่นคือมาตรฐานเดียวที่เรายอมรับ</p>
+    </div>
+    <div class="about-visual">
+      <div class="about-image-block">
+        <!-- Replace with your preferred product photo when ready -->
+        <img src="https://ecocraftedofficial.com/wp-content/uploads/2025/07/IMG_0013-scaled.jpg" alt="ecoCrafted products">
+      </div>
+      <div class="about-pull-quote">
+        <p class="en-only">"We believe in second chances — not just for materials, but for communities as a whole."</p>
+        <p class="th-only">"เราเชื่อในโอกาสที่สอง — ไม่ใช่แค่สำหรับวัสดุ แต่สำหรับชุมชนทั้งหมด"</p>
+        <cite>ecoCrafted — Founded 2023</cite>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats-row fade-up">
+  <div class="stat-item">
+    <div class="stat-number">150k+</div>
+    <div class="stat-label en-only">Thai Baht<br>in Revenue</div>
+    <div class="stat-label th-only">บาท<br>รายได้</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-number">7+</div>
+    <div class="stat-label en-only">Product<br>Lines</div>
+    <div class="stat-label th-only">ไลน์<br>ผลิตภัณฑ์</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-number">150+</div>
+    <div class="stat-label en-only">Lives<br>Impacted</div>
+    <div class="stat-label th-only">ชีวิต<br>ที่ได้รับผลกระทบ</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-number">2.4t</div>
+    <div class="stat-label en-only">Tonnes of Waste<br>Repurposed</div>
+    <div class="stat-label th-only">ตันของขยะ<br>ที่ถูกนำกลับมาใช้</div>
+  </div>
+</div>
+
+<!-- PRODUCTS -->
+<div id="products" class="products-section fade-up">
+  <div class="products-header">
+    <div>
+      <p class="section-label en-only">What We Make</p>
+      <p class="section-label th-only">สิ่งที่เราสร้าง</p>
+      <h2 class="section-title en-only">The Collection</h2>
+      <h2 class="section-title th-only">คอลเลกชัน</h2>
+    </div>
+    <a href="https://ecocraftedofficial.com/shop/" class="btn-ghost" style="white-space:nowrap;">
+      <span class="en-only">View All</span>
+      <span class="th-only">ดูทั้งหมด</span>
+    </a>
+  </div>
+  <div class="products-grid">
+    <div class="product-card" style="background: var(--accent-pale);">
+      <div class="product-overlay" style="opacity:1; background: rgba(42,61,31,0.15);">
+        <div class="product-overlay-name en-only">Lamps</div>
+        <div class="product-overlay-name th-only">โคมไฟ</div>
+        <div class="product-overlay-material en-only">Recycled concrete · Cement bags</div>
+        <div class="product-overlay-material th-only">คอนกรีตรีไซเคิล · ถุงปูน</div>
+      </div>
+    </div>
+    <div class="product-card" style="background: var(--accent-pale);">
+      <div class="product-overlay" style="opacity:1; background: rgba(42,61,31,0.15);">
+        <div class="product-overlay-name en-only">Coasters</div>
+        <div class="product-overlay-name th-only">จานรองแก้ว</div>
+        <div class="product-overlay-material en-only">Construction waste · Organic binder</div>
+        <div class="product-overlay-material th-only">เศษก่อสร้าง · ตัวประสานอินทรีย์</div>
+      </div>
+    </div>
+    <div class="product-card" style="background: var(--accent-pale);">
+      <div class="product-overlay" style="opacity:1; background: rgba(42,61,31,0.15);">
+        <div class="product-overlay-name en-only">Vases</div>
+        <div class="product-overlay-name th-only">แจกัน</div>
+        <div class="product-overlay-material en-only">Repurposed aggregate · Natural pigment</div>
+        <div class="product-overlay-material th-only">มวลรวมรีไซเคิล · สีธรรมชาติ</div>
+      </div>
+    </div>
+    <div class="product-card" style="background: var(--accent-pale);">
+      <div class="product-overlay" style="opacity:1; background: rgba(42,61,31,0.15);">
+        <div class="product-overlay-name en-only">Plant Pots</div>
+        <div class="product-overlay-name th-only">กระถางต้นไม้</div>
+        <div class="product-overlay-material en-only">Concrete waste · Organic mix</div>
+        <div class="product-overlay-material th-only">เศษคอนกรีต · ส่วนผสมอินทรีย์</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- STORY / FOUNDER -->
+<div id="story" class="story-section fade-up">
+  <div class="story-inner">
+    <div class="story-image-stack">
+      <!-- Add your own photos here when ready -->
+      <div class="story-img-main" style="background: var(--accent-pale);"></div>
+      <div class="story-img-secondary" style="background: var(--accent-pale); border: 6px solid var(--green-wash);"></div>
+      <div class="story-year">2023</div>
+    </div>
+    <div class="story-text">
+      <p class="section-label en-only">Guy Wattanalekhawong</p>
+      <p class="section-label th-only">กาย วัฒนาเลขาวงศ์</p>
+      <h2 class="story-title en-only">Built from<br>a <em>real question.</em></h2>
+      <h2 class="story-title th-only">สร้างจาก<br><em>คำถามจริง</em></h2>
+      <p class="story-body en-only">ecoCrafted began not with a business plan, but with a question — one I couldn't let go of after seeing my parents' construction sites generate waste that no one knew what to do with.</p>
+      <p class="story-body th-only">ecoCrafted เริ่มต้นไม่ใช่จากแผนธุรกิจ แต่จากคำถาม — คำถามที่ฉันปล่อยไม่ได้หลังจากเห็นไซต์ก่อสร้างของพ่อแม่สร้างของเสียที่ไม่มีใครรู้จะทำอะไร</p>
+      <p class="story-body en-only">I spent weeks in labs with Professor Pitak at NSTDA, learning material science from scratch. I went to sustainability expos. I stood at a World Bank forum, nervous, and found that the people in the room were interested — genuinely — in what a young person from Bangkok had built.</p>
+      <p class="story-body th-only">ฉันใช้เวลาหลายสัปดาห์ในห้องปฏิบัติการกับศาสตราจารย์พิทักษ์ที่ สวทช. เรียนรู้วิทยาศาสตร์วัสดุตั้งแต่เริ่มต้น</p>
+
+      <div class="story-credentials">
+        <div class="credential">
+          <span class="credential-dot"></span>
+          <span class="en-only">Collaborated with NSTDA scientists on material development</span>
+          <span class="th-only">ร่วมมือกับนักวิทยาศาสตร์ สวทช. ในการพัฒนาวัสดุ</span>
+        </div>
+        <div class="credential">
+          <span class="credential-dot"></span>
+          <span class="en-only">Featured on Thai PBS national television</span>
+          <span class="th-only">ออกรายการโทรทัศน์แห่งชาติ Thai PBS</span>
+        </div>
+        <div class="credential">
+          <span class="credential-dot"></span>
+          <span class="en-only">Invited to present at the opening seminar on life cycle carbon assessment in Thailand's real estate industry</span>
+          <span class="th-only">รับเชิญนำเสนอในสัมมนาเปิดตัวโครงการประเมินคาร์บอนตลอดวัฏจักรชีวิตในอุตสาหกรรมอสังหาริมทรัพย์ไทย</span>
+        </div>
+        <div class="credential">
+          <span class="credential-dot"></span>
+          <span class="en-only">Workshops in Klong Toey community & correctional facilities</span>
+          <span class="th-only">เวิร์กชอปในชุมชนคลองเตยและสถานพินิจ</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- IMPACT -->
+<div id="impact" class="impact-section fade-up">
+  <div class="impact-inner">
+    <p class="section-label en-only">Beyond Products</p>
+    <p class="section-label th-only">เกินกว่าผลิตภัณฑ์</p>
+    <h2 class="section-title en-only">Impact that compounds.</h2>
+    <h2 class="section-title th-only">ผลกระทบที่ทบทวี</h2>
+    <div class="impact-grid">
+      <div class="impact-card">
+        <svg class="impact-icon" viewBox="0 0 40 40" fill="none">
+          <circle cx="20" cy="20" r="18" stroke="currentColor" stroke-width="1"/>
+          <path d="M20 8v24M8 20h24" stroke="currentColor" stroke-width="1"/>
+        </svg>
+        <h3 class="impact-card-title en-only">Community Workshops</h3>
+        <h3 class="impact-card-title th-only">เวิร์กชอปชุมชน</h3>
+        <p class="impact-card-body en-only">We bring ecoCrafted directly into underserved communities — teaching residents in Klong Toey and prison inmates how to create and sell products, building real economic independence.</p>
+        <p class="impact-card-body th-only">เรานำ ecoCrafted เข้าสู่ชุมชนด้อยโอกาส สอนผู้อยู่อาศัยในคลองเตยและนักโทษในการสร้างและขายผลิตภัณฑ์</p>
+      </div>
+      <div class="impact-card">
+        <svg class="impact-icon" viewBox="0 0 40 40" fill="none">
+          <path d="M8 32L20 8l12 24" stroke="currentColor" stroke-width="1"/>
+          <path d="M11 26h18" stroke="currentColor" stroke-width="1"/>
+        </svg>
+        <h3 class="impact-card-title en-only">Design Competition</h3>
+        <h3 class="impact-card-title th-only">การแข่งขันออกแบบ</h3>
+        <p class="impact-card-body en-only">We run a nationwide design competition for students, judged by government officials and industry experts. The winning design becomes a real ecoCrafted product.</p>
+        <p class="impact-card-body th-only">เราจัดการแข่งขันออกแบบระดับประเทศสำหรับนักศึกษา ตัดสินโดยเจ้าหน้าที่รัฐและผู้เชี่ยวชาญอุตสาหกรรม</p>
+      </div>
+      <div class="impact-card">
+        <svg class="impact-icon" viewBox="0 0 40 40" fill="none">
+          <rect x="8" y="8" width="24" height="24" rx="2" stroke="currentColor" stroke-width="1"/>
+          <path d="M14 20h12M14 14h12M14 26h8" stroke="currentColor" stroke-width="1"/>
+        </svg>
+        <h3 class="impact-card-title en-only">Net-Zero Advocacy</h3>
+        <h3 class="impact-card-title th-only">การสนับสนุน Net-Zero</h3>
+        <p class="impact-card-body en-only">ecoCrafted was invited to present at the opening ceremony of a research project and seminar on life cycle carbon assessment in Thailand's real estate industry — alongside leading academics, industry figures, and policymakers driving the country's net-zero agenda.</p>
+        <p class="impact-card-body th-only">ecoCrafted ได้รับเชิญนำเสนอในพิธีเปิดโครงการวิจัยและสัมมนาเกี่ยวกับการประเมินคาร์บอนตลอดวัฏจักรชีวิตในอุตสาหกรรมอสังหาริมทรัพย์ไทย</p>
+      </div>
+    </div>
+
+    <!-- PRESS -->
+    <div class="partners-row">
+      <span class="partner-name">NSTDA</span>
+      <span style="color:var(--border-hover);">·</span>
+      <span class="partner-name">Thai PBS</span>
+      <span style="color:var(--border-hover);">·</span>
+      <span class="partner-name">World Bank Forum</span>
+      <span style="color:var(--border-hover);">·</span>
+      <span class="partner-name">Shopee Thailand</span>
+    </div>
+  </div>
+</div>
+
+<!-- SHOPIFY EMBED SECTION -->
+<div class="shop-section fade-up">
+  <div class="shop-inner">
+    <p class="section-label en-only">Shop Online</p>
+    <p class="section-label th-only">ช้อปออนไลน์</p>
+    <h2 class="section-title en-only">Buy directly.</h2>
+    <h2 class="section-title th-only">ซื้อตรง</h2>
+    <div class="shopify-placeholder">
+      <p>Shopify Buy Button embed goes here</p>
+      <code>
+&lt;!-- Paste your Shopify Buy Button embed code here --&gt;<br>
+&lt;div id='product-component-...'&gt;&lt;/div&gt;<br>
+&lt;script type="text/javascript" src="https://sdks.shopifycdn.com/buy-button/..."&gt;&lt;/script&gt;
+      </code>
+    </div>
+  </div>
+</div>
+
+<!-- CONTACT -->
+<div id="contact" class="contact-section fade-up">
+  <div class="contact-inner">
+    <p class="section-label" style="color:var(--accent-light);">
+      <span class="en-only">Get In Touch</span>
+      <span class="th-only">ติดต่อเรา</span>
+    </p>
+    <h2 class="contact-title en-only">Get<br><em>Involved.</em></h2>
+    <h2 class="contact-title th-only">มา<br><em>ร่วมกัน</em></h2>
+    <p class="contact-body en-only">Whether you're a designer, a brand, a school, or someone who wants to bring ecoCrafted workshops to your community — there is a place for you here.</p>
+    <p class="contact-body th-only">ไม่ว่าคุณจะเป็นนักออกแบบ แบรนด์ โรงเรียน หรือใครก็ตามที่ต้องการนำเวิร์กชอป ecoCrafted มาสู่ชุมชนของคุณ — มีที่สำหรับคุณที่นี่</p>
+    <div class="contact-links">
+      <a href="mailto:ecoCrafted_2024@gmail.com" class="contact-link">ecoCrafted_2024@gmail.com</a>
+      <a href="https://www.instagram.com/ecocraftedofficial/" class="contact-link">Instagram</a>
+      <a href="https://www.facebook.com/profile.php?id=61563306443830" class="contact-link">Facebook</a>
+      <a href="https://lin.ee/K1PhX6g" class="contact-link">Line</a>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <a href="#" class="footer-logo">ecoCrafted</a>
+  <ul class="footer-links">
+    <li><a href="#about"><span class="en-only">About</span><span class="th-only">เกี่ยวกับ</span></a></li>
+    <li><a href="#products"><span class="en-only">Products</span><span class="th-only">ผลิตภัณฑ์</span></a></li>
+    <li><a href="#story"><span class="en-only">Story</span><span class="th-only">เรื่องราว</span></a></li>
+    <li><a href="https://www.instagram.com/ecocraftedofficial/">Instagram</a></li>
+  </ul>
+  <p class="footer-copy">© 2023 ecoCrafted. Bangkok, Thailand.</p>
+</footer>
+
+<script>
+  // Language toggle
+  function setLang(lang) {
+    document.getElementById('body').className = 'lang-' + lang;
+    document.getElementById('btn-en').className = lang === 'en' ? 'active' : '';
+    document.getElementById('btn-th').className = lang === 'th' ? 'active' : '';
+  }
+
+  // Nav scroll effect
+  const nav = document.getElementById('nav');
+
+  // Scroll-driven background tint on body
+  const bgStops = [
+    { y: 0,    bg: '#F8F7F2' },
+    { y: 800,  bg: '#F2F4EE' },
+    { y: 1600, bg: '#EAF0E4' },
+    { y: 2400, bg: '#F2F4EE' },
+    { y: 3200, bg: '#F8F7F2' },
+  ];
+
+  function lerp(a, b, t) { return a + (b - a) * t; }
+  function hexToRgb(h) {
+    const r = parseInt(h.slice(1,3),16), g = parseInt(h.slice(3,5),16), b = parseInt(h.slice(5,7),16);
+    return [r,g,b];
+  }
+  function lerpColor(c1, c2, t) {
+    const [r1,g1,b1] = hexToRgb(c1), [r2,g2,b2] = hexToRgb(c2);
+    return `rgb(${Math.round(lerp(r1,r2,t))},${Math.round(lerp(g1,g2,t))},${Math.round(lerp(b1,b2,t))})`;
+  }
+
+  window.addEventListener('scroll', () => {
+    const y = window.scrollY;
+    nav.classList.toggle('scrolled', y > 60);
+
+    // Body background colour shift
+    for (let i = 0; i < bgStops.length - 1; i++) {
+      const s = bgStops[i], e = bgStops[i+1];
+      if (y >= s.y && y < e.y) {
+        const t = (y - s.y) / (e.y - s.y);
+        document.body.style.backgroundColor = lerpColor(s.bg, e.bg, t);
+        break;
+      }
+    }
+  }, { passive: true });
+
+  // Fade-up on scroll — IntersectionObserver
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
